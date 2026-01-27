@@ -1,0 +1,25 @@
+componentName:  sosaltix
+welcomeStyle:   sidebar
+
+strings:
+    productName:         Sosaltix
+    shortProductName:    Sosaltix
+    version:             rolling
+    shortVersion:        2024.01
+    bootloaderEntryName: Sosaltix
+    productUrl:          https://github.com/d1533848-oss/sosaltix
+    supportUrl:          https://github.com/d1533848-oss/sosaltix/issues
+    knownIssuesUrl:      https://github.com/d1533848-oss/sosaltix/issues
+    releaseNotesUrl:     https://github.com/d1533848-oss/sosaltix/releases
+
+images:
+    productLogo:         "sosaltix-logo.png"
+    productIcon:         "sosaltix-icon.png"
+    productWelcome:      "welcome.png"
+
+slideshow:               "show.qml"
+
+style:
+   sidebarBackground:    "#2c3e50"
+   sidebarText:          "#ffffff"
+   sidebarTextSelect:    "#3498db"

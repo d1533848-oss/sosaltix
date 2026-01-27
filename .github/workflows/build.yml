@@ -1,0 +1,51 @@
+name: Build Sosaltix ISO
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * 0'  # Каждое воскресенье
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        path: 'sosaltix'
+    
+    - name: Install dependencies
+      run: |
+        pacman -Syu --noconfirm
+        pacman -S --noconfirm archiso git sudo
+    
+    - name: Build ISO
+      run: |
+        cd sosaltix/archiso
+        chmod +x airootfs/root/customize_airootfs.sh
+        mkarchiso -v -w work -o out .
+    
+    - name: Upload ISO artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: sosaltix-iso
+        path: sosaltix/archiso/out/*.iso
+    
+    - name: Create Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: sosaltix/archiso/out/*.iso
+        tag_name: v${{ github.run_number }}
+        name: Sosaltix ${{ github.run_number }}
+        body: |
+          Автоматическая сборка Sosaltix
+          - Дата: ${{ github.event.head_commit.timestamp }}
+          - Коммит: ${{ github.sha }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
